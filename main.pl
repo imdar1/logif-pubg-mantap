@@ -1,7 +1,11 @@
+/*deklarasi dynamic udh di nwse.pl*/
+
 start :- S is 12,
 		 CField is 1,
          random(2,S,X),
          random(2,S,Y),
+	 retract(player(_,_)),
+	 assert(player(X,Y)),
          write('Selamat datang di medan peperangan!'),nl,
          write('Silakan jalankan perintah yang Anda inginkan'),nl,
          repeat,
