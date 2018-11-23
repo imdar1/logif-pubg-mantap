@@ -28,7 +28,7 @@ attack  :- Armorp =:= 0, Healthnp is Healthp - Damagee,
 
 attack  :- Armornp > 0,
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
-        assertz(player(Xp,Yp,Healthp,Armornp,Weaponp,Ammonp)),
+        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
         retract(enemy(Xe,Ye,Weapone)), Xne is 1, Yne is 1, 
         assertz(enemy(Xne,Yne,Weapone)), 
         write("Kamu menyerang musuh dan dia menyerang balik menggunakan "),
@@ -38,6 +38,6 @@ attack  :- Armornp > 0,
 
 attack  :- Healthnp <= 0, Healthnp is 0, Ammonp is Ammop - 1,
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
-        assertz(player(Xp,Yp,Healthp,Armornp,Weaponp,Ammonp)),
+        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
         write("Kamu telah mati.").
 
