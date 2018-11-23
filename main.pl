@@ -1,13 +1,15 @@
 /*deklarasi dynamic udh di nwse.pl*/
 
 /* kurang bikin move */
-:- dynamic player/5, cfield/1, move/1.
+:- dynamic player/6, cfield/1, move/1, enemy/2.
 :- retractall(player(_,_,_,_,_)), retractall(cfield(_)).
 
-/*Definisi Player(X,Y,Health,Armor,Weapon)*/
-player(1,1,100,0,ak47).
+/*Definisi Player(X,Y,Health,Armor,Weapon, Ammo)*/
+player(1,1,100,0,ak47, 5).
 cfield(1).
 move(0).
+/*Definisi enemy(X,Y,Weapon,Health)*/
+enemy(1,2,Pistol,100).
 
 start :- S is 12,
         cfield(CField), 
@@ -73,6 +75,7 @@ status :-  player(_,_,Health,Armor,Weapon),
            write("Nyawa: "), write(Health), nl,
            write("Pelindung: "), write(Armor), nl,
            write("Senjata: "), write(Weapon), nl.
+           write("Peluru: "), write(Ammo), nl.
 
 
 drawmap :- cfield(CField), player(X,Y,_,_,_), map(1,1,12,CField,X,Y).
