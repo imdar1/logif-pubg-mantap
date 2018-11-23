@@ -1,4 +1,4 @@
-attack():- enemy(Xe,Ye,Weapone,Healthe), player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop),
+attack  :- enemy(Xe,Ye,Weapone,Healthe), player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop),
         Xp =:= Xe, Yp tr =:= Ye, !, weapon(Weapone,Damagee), Armorp > 0, !, 
         Armornp is Armorp - Damagee, Armornp < 0, !, 
         Healthnp is Healthp + Armornp, Armornp is 0, Ammonp is Ammop - 1,
@@ -11,9 +11,9 @@ attack():- enemy(Xe,Ye,Weapone,Healthe), player(Xp,Yp,Healthp,Armorp,Weaponp,Amm
         write(" serangan. Untungnya serangan itu dapat dikurangi dengan pelindung."),
         write(" Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.").
 
-attack():- Xp != Xe, Yp != Ye, write("Tidak ada musuh di sekelilingmu.").
+attack  :- Xp != Xe, Yp != Ye, write("Tidak ada musuh di sekelilingmu.").
 
-attack():- Armorp < 0, Healthnp is Healthp - Damagee, Ammonp is Ammop - 1, 
+attack  :- Armorp < 0, Healthnp is Healthp - Damagee, Ammonp is Ammop - 1, 
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)), Healthnp > 0, !, 
         assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
         retract(enemy(Xe,Ye,Weapone,Healthe)), Healthne is 0, 
@@ -23,7 +23,7 @@ attack():- Armorp < 0, Healthnp is Healthp - Damagee, Ammonp is Ammop - 1,
         write(" serangan."),
         write(" Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.").
 
-attack():- Armornp > 0, Ammonp is Ammop - 1,
+attack  :- Armornp > 0, Ammonp is Ammop - 1,
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
         assertz(player(Xp,Yp,Healthp,Armornp,Weaponp,Ammonp)),
         retract(enemy(Xe,Ye,Weapone,Healthe)), Healthne is 0, 
@@ -33,7 +33,7 @@ attack():- Armornp > 0, Ammonp is Ammop - 1,
         write(" serangan. Untungnya serangan itu dapat dikurangi dengan pelindung."),
         write(" Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.").
 
-attack():- Healthnp < 0, Healthnp is 0, Ammonp is Ammop - 1,
+attack  :- Healthnp < 0, Healthnp is 0, Ammonp is Ammop - 1,
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
         assertz(player(Xp,Yp,Healthp,Armornp,Weaponp,Ammonp)),
         retract(enemy(Xe,Ye,Weapone,Healthe)),

@@ -11,8 +11,8 @@ posisi(X,Y):- write("Gurun")
 
 cek(X,Y):- write("Utara kamu adalah "),posisi(X,Y-1),write(", Selatan kamu adalah "),posisi(X,Y+1),write(", Barat kamu adalah "),posisi(X-1,Y),write(", Timur kamu adalah "),posisi(X+1,Y).
 
-n():-retract(player(X,Y)), Z is Y-1,assertzz(player(X,Z)),write("Kamu sekarang berada di "),posisi(X,Z),cek(X,Z),move(A),B is A+1,move(B).
-s():-retract(player(X,Y)), Z is Y+1,assertzz(player(X,Z)),write("Kamu sekarang berada di "),posisi(X,Z),cek(X,Z),move(A),B is A+1,move(B).
-e():-retract(player(X,Y)), Z is X+1,assertzz(player(Z,Y)),write("Kamu sekarang berada di "),posisi(Z,Y),cek(Z,Y),move(A),B is A+1,move(B).
-w():-retract(player(X,Y)), Z is X-1,assertzz(player(Z,Y)),write("Kamu sekarang berada di "),posisi(Z,Y),cek(Z,Y),move(A),B is A+1,move(B).
+n():-retract(player(X,Y)), Z is Y-1,assertz(player(X,Z)),write("Kamu sekarang berada di "),posisi(X,Z),cek(X,Z),move(A),B is A+1,move(B).
+s():-retract(player(X,Y)), Z is Y+1,assertz(player(X,Z)),write("Kamu sekarang berada di "),posisi(X,Z),cek(X,Z),move(A),B is A+1,move(B).
+e():-retract(player(X,Y)), Z is X+1,assertz(player(Z,Y)),write("Kamu sekarang berada di "),posisi(Z,Y),cek(Z,Y),move(A),B is A+1,move(B).
+w():-retract(player(X,Y)), Z is X-1,assertz(player(Z,Y)),write("Kamu sekarang berada di "),posisi(Z,Y),cek(Z,Y),move(A),B is A+1,move(B).
   
