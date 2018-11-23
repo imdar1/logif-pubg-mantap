@@ -1,5 +1,5 @@
 attack():- enemy(Xe,Ye,Weapone,Healthe), player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop),
-        Xp =:= Xe, Yp =:= Ye, !, weapon(Weapone,Damagee), Armorp > 0, !, 
+        Xp =:= Xe, Yp tr =:= Ye, !, weapon(Weapone,Damagee), Armorp > 0, !, 
         Armornp is Armorp - Damagee, Armornp < 0, !, 
         Healthnp is Healthp + Armornp, Armornp is 0, Ammonp is Ammop - 1,
         retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)), Healthnp > 0, !,
