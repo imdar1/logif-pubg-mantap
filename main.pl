@@ -5,7 +5,7 @@
 :- retractall(player(_,_,_,_,_)), retractall(cfield(_)).
 
 /*Definisi Player(X,Y,Health,Armor,Weapon, Ammo)*/
-player(1,1,100,0,ak47, 5).
+player(1,1,100,0,ak47,5).
 cfield(1).
 move(0).
 /*Definisi enemy(X,Y,Weapon,Health)*/
@@ -15,9 +15,9 @@ start :- S is 12,
         cfield(CField), 
         random(2,S,X),
         random(2,S,Y),
-        player(_,_,Health,Armor,Weapon),
-        retract(player(_,_,Health,Armor,Weapon)),
-        assert(player(X,Y,Health,Armor,Weapon)),
+        player(_,_,Health,Armor,Weapon,Ammo),
+        retract(player(_,_,Health,Armor,Weapon,Ammo)),
+        assert(player(X,Y,Health,Armor,Weapon,Ammo)),
         write('Selamat datang di medan peperangan!'),nl,
         write('Silakan jalankan perintah yang Anda inginkan'),nl,nl,
         help(),
@@ -41,10 +41,10 @@ posisi(X,Y):- write("Gurun").
 
 cek(X,Y):- A is X+1, B is X-1, C is Y+1, D is Y-1, write("Utara kamu adalah "),posisi(X,D),nl,write("Selatan kamu adalah "),posisi(X,C),nl,write("Barat kamu adalah "),posisi(B,Y),nl,write("Timur kamu adalah "),posisi(A,Y),nl.
 
-n():-player(X,Y,M,N,O), retract(player(X,Y,M,N,O)), Z is Y-1,assert(player(X,Z,M,N,O)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
-s():-player(X,Y,M,N,O), retract(player(X,Y,M,N,O)), Z is Y+1,assert(player(X,Z,M,N,O)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
-e():-player(X,Y,M,N,O), retract(player(X,Y,M,N,O)), Z is X+1,assert(player(Z,Y,M,N,O)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).
-w():-player(X,Y,M,N,O), retract(player(X,Y,M,N,O)), Z is X-1,assert(player(Z,Y,M,N,O)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).      
+n():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
+s():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
+e():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).
+w():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).      
 		   
 help:-write("Fungsi yang dapat dipakai: "), nl,
       write("start -- memulai permainan"), nl,
@@ -71,14 +71,14 @@ help:-write("Fungsi yang dapat dipakai: "), nl,
       write("- = dapat diakses"), nl,
       write("X = tidak dapat diakses"), nl.
 
-status :-  player(_,_,Health,Armor,Weapon),
+status :-  player(_,_,Health,Armor,Weapon,Ammo),
            write("Nyawa: "), write(Health), nl,
            write("Pelindung: "), write(Armor), nl,
-           write("Senjata: "), write(Weapon), nl.
+           write("Senjata: "), write(Weapon), nl,
            write("Peluru: "), write(Ammo), nl.
 
 
-drawmap :- cfield(CField), player(X,Y,_,_,_), map(1,1,12,CField,X,Y).
+drawmap :- cfield(CField), player(X,Y,_,_,_,_), map(1,1,12,CField,X,Y).
 
 map(Brs,_,X,_,_,_) :- Brs>X. /* Basis */
 map(Brs,Kol,X,CField,Px,Py) :- (Kol =< CField ; Kol >= X-CField+1; Brs =< CField; Brs >= X-CField+1), write('X'),((Kol=:=X, nl, K is 1, B is Brs+1, map(B,K,X,CField,Px,Py),!) ; (K is Kol+1,map(Brs,K,X,CField,Px,Py))),!.
