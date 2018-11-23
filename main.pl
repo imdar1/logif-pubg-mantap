@@ -17,10 +17,10 @@ start :- S is 12,
         random(2,S,Y),
         player(_,_,Health,Armor,Weapon,Ammo),
         retract(player(_,_,Health,Armor,Weapon,Ammo)),
-        assert(player(X,Y,Health,Armor,Weapon,Ammo)),
+        assertz(player(X,Y,Health,Armor,Weapon,Ammo)),
         write('Selamat datang di medan peperangan!'),nl,
         write('Silakan jalankan perintah yang Anda inginkan'),nl,nl,
-        help(),
+        help,
         map(1,1,S,CField,X,Y).
          /*repeat,
            write('> '),
@@ -41,10 +41,10 @@ posisi(X,Y):- write("Gurun").
 
 cek(X,Y):- A is X+1, B is X-1, C is Y+1, D is Y-1, write("Utara kamu adalah "),posisi(X,D),nl,write("Selatan kamu adalah "),posisi(X,C),nl,write("Barat kamu adalah "),posisi(B,Y),nl,write("Timur kamu adalah "),posisi(A,Y),nl.
 
-n():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
-s():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assert(move(B)).
-e():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).
-w():-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,assert(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assert(move(B)).      
+n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,assertz(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assertz(move(B)).
+s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,assertz(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),assertz(move(B)).
+e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,assertz(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assertz(move(B)).
+w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,assertz(player(X,Y,M,N,P,Q)),write("Kamu sekarang berada di "),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),assertz(move(B)).      
 		   
 help:-write("Fungsi yang dapat dipakai: "), nl,
       write("start -- memulai permainan"), nl,
