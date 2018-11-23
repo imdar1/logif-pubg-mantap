@@ -24,7 +24,7 @@ start   :-  S is 12,
                 (Command == e,e,fail);
                 (Command == w,w,fail);
                 (Command == status, status, fail);
-	            (Command == quit, !)
+	            (Command == quit, !, halt)
 	        ).
 
 n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)).
