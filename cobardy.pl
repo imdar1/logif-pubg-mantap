@@ -219,8 +219,8 @@ s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,
 e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove, danlapMove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove, danlapMove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 
-mametMove:- random(1,5,X),enemyRdmMoveMamet(X),object(A,B,mamet),write(A),write(' '),write(B),nl.
-danlapMove:- random(1,5,X),enemyRdmMoveDanlap(X),object(A,B,danlap),write(A),write(' '),write(B),nl.
+mametMove:- random(1,5,X),enemyRdmMoveMamet(X).
+danlapMove:- random(1,5,X),enemyRdmMoveDanlap(X).
 
 enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),C is A+1,(12-Z+1>C),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
 enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),!,C is A-1,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
