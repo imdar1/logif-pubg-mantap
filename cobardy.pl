@@ -29,11 +29,11 @@ enemy(danlap,ak47).
 medicine(antangin,10).
 medicine(madurasa,50).
 /*Definisi:weapon(Nama,Damage)*/
-weapon(pistol,15).
-weapon(ak47,25).
+weapon(pistol,40).
+weapon(ak47,60).
 /*Definisi:armor(Nama,AngkaPerlindungan)*/
-armor(jakang,15).
-armor(slayer,40).
+armor(jakang,25).
+armor(slayer,50).
 /*Definisi:ammo(nama,WeaponYangCocok)*/
 ammo(ammo1,pistol).
 ammo(ammo2,ak47).
@@ -54,9 +54,10 @@ start   :-  Si is 12,
             asserta(kills(0)),
 
             /*Menginisialisasi Lokasi Player*/
-            random(2,S,X),
+            randomize,
+	    random(2,S,X),
             random(2,S,Y),
-            asserta(player(X,Y,25,0,ak47,15)),
+            asserta(player(X,Y,100,0,ak47,15)),
 
             /*Menginisialisasi Lokasi Enemy*/
             random(2,S,Xe1),
@@ -250,7 +251,7 @@ help:-write('Fungsi yang dapat dipakai: '), nl,
       write('P = pemain'), nl,
       write('E = musuh'), nl,
       write('- = dapat diakses'), nl,
-      write('X = tidak dapat diakses'), nl.
+      write('# = zona pencoretan'), nl.
 
 drawmap :- cfield(CField), player(X,Y,_,_,_,_), map(1,1,12,CField,X,Y).
 
