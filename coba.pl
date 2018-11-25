@@ -184,7 +184,7 @@ cek(X,Y):- A is X+1, B is X-1, C is Y+1, D is Y-1, write('Utara kamu adalah '),p
 
 failed :- write('Anda kalah di game ini, tapi menang di hati para penonton'), nl, halt.
 
-n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)),moveRandomDanlap, moveRandomMamet, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
 s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
 e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
@@ -275,7 +275,7 @@ look:- player(X,Y,_,_,_,_), A is X-1, B is X+1, C is Y-1, D is Y+1,
       ,tulis(A,Y),tulis(X,Y),tulis(B,Y),nl
       ,tulis(A,D),tulis(X,D),tulis(B,D),nl.
 
-attack :- object(Xe,Ye,En), enemy(En,_), player(Xp,Yp,_,_,_,_), (Xp =\= Xe; Yp =\=Ye), write('Tidak ada musuh di sekelilingmu.'), nl,!.
+attack :- object(Xe,Ye,mamet), enemy(mamet,_), object(Xe1,Ye1,danlap), enemy(danlap,_), player(Xp,Yp,_,_,_,_), write(Xp),nl, write(Yp),nl,write(Xe),nl,write(Ye),nl,((Xp =\= Xe; Yp =\=Ye),(Xp =\= Xe1; Yp =\=Ye1)), write('Tidak ada musuh di sekelilingmu.'), nl,!.
 
 attack:- player(_,_,_,_,_,Ammop), Ammop == 0, write('Pelurumu habis! Silahkan cari peluru dulu.'), nl,!. 
 
