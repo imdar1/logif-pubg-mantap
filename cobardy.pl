@@ -20,8 +20,6 @@ invLimit(10).
 /*Definisi:object(X,Y,nama)*/
 /*Mengeset sebuah object yang akan diisi dengan nama dan letak: ammo, enemy, medicine, weapon, dan armor*/
 :- dynamic(object/3).
-/*Definisi:kills(JumlahEnemyKilled)*/
-:- dynamic(kills/1)
 
 /*Definisi:enemy(Nama,Weapon)*/
 enemy(mamet,pistol).
