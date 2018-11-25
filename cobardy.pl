@@ -21,7 +21,7 @@ invLimit(10).
 /*Mengeset sebuah object yang akan diisi dengan nama dan letak: ammo, enemy, medicine, weapon, dan armor*/
 :- dynamic(object/3).
 /*Definisi:kills(JumlahEnemyKilled)*/
-:- dynamic(kills/1).
+:- dynamic(kills/1)
 
 /*Definisi:enemy(Nama,Weapon)*/
 enemy(mamet,pistol).
@@ -151,13 +151,12 @@ start   :-  Si is 12,
             assertz(object(Xo2c, Yo2c, ammo2)),
             random(2,S,Xo2d),
             random(2,S,Yo2d),
-            assertz(object(Xo2d, Yo2d, ammo2)),
-            
-            /*Menginisialisasi nilai kills*/ 
-            asserta(kills(0)),
+            assertz(object(Xo2d, Yo2d, ammo2)), 
+
             write('Selamat datang di medan peperangan!'),nl,
             write('Silakan jalankan perintah yang Anda inginkan'),nl,nl,
             help,
+            repeat,
             write('> '),
             read(Command),
             (
@@ -197,6 +196,7 @@ start   :-  Si is 12,
                 (Command == quit, !, halt)
 	        ).
 
+
 cek(X,Y):- A is X+1, 
             B is X-1, 
             C is Y+1, 
@@ -212,30 +212,13 @@ cek(X,Y):- A is X+1,
 
 failed :- write('Anda kalah di game ini, tapi menang di hati para penonton'), nl, halt.
 
-n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove,danlapMove, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove,danlapMove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove,danlapMove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
-w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametMove,danlapMove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
+n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)),moveRandomDanlap, moveRandomMamet, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
+w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), moveRandomDanlap, moveRandomMamet,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 
-mametMove:- random(1,5,X),enemyRdmMoveMamet(X).
-danlapMove:- random(1,5,X),enemyRdmMoveDanlap(X).
-
-enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),C is A+1,(12-Z+1>C+1),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),!,C is A-1,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=2,object(A,B,mamet),C is A-1,(C>Z+1),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=2,object(A,B,mamet),!,C is A+1,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=3,object(A,B,mamet),C is B+1,(12-Z+1>C+1),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=3,object(A,B,mamet),!,C is B-1,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=4,object(A,B,mamet),C is B-1,(C>Z+1),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=4,object(A,B,mamet),!,C is B+1,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=1,object(A,B,danlap),C is A+1,(12-Z+1>C+1),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=1,object(A,B,danlap),!,C is A-1,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=2,object(A,B,danlap),C is A-1,(C>Z+1),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=2,object(A,B,danlap),!,C is A+1,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=3,object(A,B,danlap),C is B+1,(12-Z+1>C+1),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=3,object(A,B,danlap),!,C is B-1,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=4,object(A,B,danlap),C is B-1,(C>Z+1),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=4,object(A,B,danlap),!,C is B+1,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
+moveRandomMamet :- retract(object(X,Y,mamet)), randomize, random(-1,2,M), ((M =:=0,random(1,3,N),MoveY is N*2-3,Xa is X, Ya is Y+MoveY,assertz(object(Xa,Ya,mamet)),!);(Xa is X+M, Ya is Y,assertz(object(Xa,Ya,mamet)))).
+moveRandomDanlap :- retract(object(X,Y,danlap)),randomize, random(-1,2,M), ((M =:=0,random(1,3,N),MoveY is N*2-3,Xa is X, Ya is Y+MoveY,assertz(object(Xa,Ya,danlap)),!);(Xa is X+M, Ya is Y,assertz(object(Xa,Ya,danlap)))).
 
 posisi(X,Y):- cfield(Z),((12-Z+1=:=X);(12-Z+1=:=Y);(Z=:=Y);(Z=:=X)),!,write('Zona Pencoretan').
 posisi(X,Y):- X<6,X>2,Y<12,Y>5,!,write('Ding Dong').
@@ -504,7 +487,7 @@ attack:- player(_,_,_,_,_,Ammop), Ammop == 0, write('Pelurumu habis! Silahkan ca
 attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop), weapon(Wp,_),
             weapon(We,Dmge),Armor =:= 0, CAmmop is Ammop-1, CHealth is Health-Dmge, 
             retract(player(X,Y,Health,Armor,Wp,Ammop)),asserta(player(X,Y,CHealth,Armor,Wp,CAmmop)),
-            retract(object(X,Y,Enemy)),assertz(object(X,Y,We)), 
+            retract(object(X,Y,Enemy)),assertz(object(X,Y,We)),
             write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
             write(We), write('. Kamu terkena '), write(Dmge),
             write(' serangan. Sayangnya kamu tidak punya pelindung!'),
@@ -516,7 +499,7 @@ attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop
             weapon(We,Dmge), CAmmop is Ammop-1, Temp is Armor-Dmge, ((Temp >= 0, CArmor is Temp,
             CHealth is Health,!);(CArmor is 0, CHealth is CHealth+Temp)),
             retract(player(X,Y,Health,Armor,Wp,Ammop)),asserta(player(X,Y,CHealth,CArmor,Wp,CAmmop)),
-            retract(object(X,Y,Enemy)),assertz(object(X,Y,We)), 
+            retract(object(X,Y,Enemy)),assertz(object(X,Y,We)),
             write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
             write(We), write('. Kamu terkena '), write(Dmge),
             write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
