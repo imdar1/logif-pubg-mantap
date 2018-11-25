@@ -172,6 +172,8 @@ start   :-  Si is 12,
                 (Command == use(ammo1), use(ammo1), fail);
                 (Command == use(ammo2), use(ammo2), fail);
                 (Command == attack, attack, fail);
+                (Command == savef(read(Namafile)), savef(read(Namafile)), fail);
+                (Command == loadf(read(Namafile)), loadf(read(Namafile)), fail);
                 (Command == quit, !, halt)
 	        ).
 
@@ -268,27 +270,101 @@ look:- player(X,Y,_,_,_,_), A is X-1, B is X+1, C is Y-1, D is Y+1,
       ,tulis(A,Y),tulis(X,Y),tulis(B,Y),nl
       ,tulis(A,D),tulis(X,D),tulis(B,D),nl.
 
-attacke :- object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammo), weapon(Wp,Do),
-            Ammop > 0.
+savef(Namafile):-
+    
+    open(Namafile, write, Stream),
+
+    player(Xp,Yp,Health,Armor,Weaponp,Ammo),
+    cfield(AreaDaerahDanger),
+    move(JumlahMoveDilakukan),
+    inventory(ListInventory),
+    object(Xe,Ye,Namao),
+
+    write(Stream, Xp), write(Stream, '.'), nl(Stream),
+    write(Stream, Yp), write(Stream, '.'), nl(Stream),
+    write(Stream, Health), write(Stream, '.'), nl(Stream),
+    write(Stream, Armor), write(Stream, '.'), nl(Stream),
+    write(Stream, Weaponp), write(Stream, '.'), nl(Stream),
+    write(Stream, AreaDaerahDanger), write(Stream, '.'), nl(Stream),
+    write(Stream, JumlahMoveDilakukan), write(Stream, '.'), nl(Stream),
+    write(Stream, ListInventory), write(Stream, '.'), nl(Stream),
+    write(Stream, Xe), write(Stream, '.'), nl(Stream),
+    write(Stream, Ye), write(Stream, '.'), nl(Stream),
+    write(Stream, Namao), write(Stream, '.'), nl(Stream),
+
+    write("suds bro"), nl,
+    close(Stream).
+
+loadf(Namafile):-
+    open(Namafile, read, Stream),
+
+    player(Xp,Yp,Health,Armor,Weaponp,Ammo),
+    cfield(AreaDaerahDanger),
+    move(JumlahMoveDilakukan),
+    inventory(ListInventory),
+    object(Xe,Ye,Namao),
+
+    retract(player(Xp,Yp,Health,Armor,Weaponp,Ammo)),
+    retract(cfield(AreaDaerahDanger)),
+    retract(move(JumlahMoveDilakukan)),
+    retract(inventory(ListInventory)),
+    retract(object(Xe,Ye,Namao)),
+
+    read(Stream, Xp), 
+    read(Stream, Yp), 
+    read(Stream, Health), 
+    read(Stream, Armor), 
+    read(Stream, Weaponp), 
+    read(Stream, AreaDaerahDanger), 
+    read(Stream, JumlahMoveDilakukan), 
+    read(Stream, ListInventory), 
+    read(Stream, Xe), 
+    read(Stream, Ye), 
+    read(Stream, Namao), 
+
+    asserta(player(Xp,Yp,Health,Armor,Weaponp,Ammo)),
+    asserta(cfield(AreaDaerahDanger)),
+    asserta(move(JumlahMoveDilakukan)),
+    asserta(inventory(ListInventory)),
+    asserta(object(Xe,Ye,Namao)),
+
+    write("suds bro!"), nl,
+    close(Stream).
+
+	/* Write player data */
+	write(Stream, Health), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Hunger), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Thirst), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Pos_x), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Pos_y), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Weapon), 			write(Stream, '.'), nl(Stream),
+	write(Stream, Inventory), 		write(Stream, '.'), nl(Stream),
+	
+	/* Write map data */
+	write(Stream, Map_items), 		write(Stream, '.'), nl(Stream),
+	write(Stream, Enemies), 		write(Stream, '.'), nl(Stream),
+	
+	write('Save data successfully created !'), nl,
+	close(Stream).
+
+
 
 attack :- object(X,Y,En), enemy(En,Weapone), 
       player(X,Y,Healthp,Armorp,Weaponp,Ammop), weapon(Weapone,Damagee), 
-      Ammop > 0, !, Ammonp is Ammop - 1,
-      Armorp > -1, !, Armornp is Armorp - Damagee, Armornp > 0, !,
+      Ammop > 0, !, Ammonp is Ammop - 1, Armornp is Armorp - Damagee, Armornp > 0, !,
       retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
       assertz(player(Xp,Yp,Healthp,Armornp,Weaponp,Ammonp)),
-      retract(object(Xe,Ye,mamet)), 
+      retract(object(Xe,Ye,En)), 
       assertz(object(Xe,Ye,Weapone)),
       write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
       write(Weapone), write('. Kamu terkena '), write(Damagee),
       write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
-      write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.').
+      write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'), nl.
 
-attack:- object(X,Y,En), enemy(En,Weapone), 
+attack :- object(X,Y,En), enemy(En,Weapone), 
       player(X,Y,Healthp,Armorp,Weaponp,Ammop), weapon(Weapone,Damagee), 
-      Ammop > 0, !, Ammonp is Ammop - 1,
-      Armorp > -1, !, Armornp is Armorp - Damagee,
-      Armornp < 1, ! ,Healthnp is Healthp + Armornp,
+      Ammop > 0, !, Ammonp is Ammop - 1, Armornp is Armorp - Damagee,
+      Healthnp is Healthp + Armornp,
       retract(player(X,Y,Healthp,Armorp,Weaponp,Ammop)), Healthnp > 0,
       assertz(player(X,Y,Healthnp,0,Weaponp,Ammonp)),
       retract(object(X,Y,En)), 
@@ -296,9 +372,10 @@ attack:- object(X,Y,En), enemy(En,Weapone),
       write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
       write(Weapone), write('. Kamu terkena '), write(Damagee),
       write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
-      write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'). 
+      write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'), nl. 
 
-attack:- player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop), Ammop == 0, !, write('Pelurumu habis! Silahkan cari peluru dulu.'), nl, fail. 
+attack:- player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop), Ammop == 0, !, 
+write('Pelurumu habis! Silahkan cari peluru dulu.'), nl, fail. 
 
 attack :- object(X,Y,En), enemy(En,Weapone), 
       player(X,Y,Healthp,Armorp,Weaponp,Ammop), weapon(Weapone,Damagee), 
