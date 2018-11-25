@@ -222,21 +222,21 @@ w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,
 mametMove:- random(1,5,X),enemyRdmMoveMamet(X).
 danlapMove:- random(1,5,X),enemyRdmMoveDanlap(X).
 
-enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),C is A+1,(12-Z+1>C),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
+enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),C is A+1,(12-Z+1>C+1),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
 enemyRdmMoveMamet(X):- cfield(Z),X=:=1,object(A,B,mamet),!,C is A-1,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=2,object(A,B,mamet),C is A-1,(C>Z),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
+enemyRdmMoveMamet(X):- cfield(Z),X=:=2,object(A,B,mamet),C is A-1,(C>Z+1),!,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
 enemyRdmMoveMamet(X):- cfield(Z),X=:=2,object(A,B,mamet),!,C is A+1,retract(object(A,B,mamet)),assertz(object(C,B,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=3,object(A,B,mamet),C is B+1,(12-Z+1>C),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
+enemyRdmMoveMamet(X):- cfield(Z),X=:=3,object(A,B,mamet),C is B+1,(12-Z+1>C+1),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
 enemyRdmMoveMamet(X):- cfield(Z),X=:=3,object(A,B,mamet),!,C is B-1,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveMamet(X):- cfield(Z),X=:=4,object(A,B,mamet),C is B-1,(C>Z),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
+enemyRdmMoveMamet(X):- cfield(Z),X=:=4,object(A,B,mamet),C is B-1,(C>Z+1),!,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
 enemyRdmMoveMamet(X):- cfield(Z),X=:=4,object(A,B,mamet),!,C is B+1,retract(object(A,B,mamet)),assertz(object(A,C,mamet)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=1,object(A,B,danlap),C is A+1,(12-Z+1>C),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
+enemyRdmMoveDanlap(X):- cfield(Z),X=:=1,object(A,B,danlap),C is A+1,(12-Z+1>C+1),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
 enemyRdmMoveDanlap(X):- cfield(Z),X=:=1,object(A,B,danlap),!,C is A-1,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=2,object(A,B,danlap),C is A-1,(C>Z),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
+enemyRdmMoveDanlap(X):- cfield(Z),X=:=2,object(A,B,danlap),C is A-1,(C>Z+1),!,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
 enemyRdmMoveDanlap(X):- cfield(Z),X=:=2,object(A,B,danlap),!,C is A+1,retract(object(A,B,danlap)),assertz(object(C,B,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=3,object(A,B,danlap),C is B+1,(12-Z+1>C),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
+enemyRdmMoveDanlap(X):- cfield(Z),X=:=3,object(A,B,danlap),C is B+1,(12-Z+1>C+1),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
 enemyRdmMoveDanlap(X):- cfield(Z),X=:=3,object(A,B,danlap),!,C is B-1,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
-enemyRdmMoveDanlap(X):- cfield(Z),X=:=4,object(A,B,danlap),C is B-1,(C>Z),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
+enemyRdmMoveDanlap(X):- cfield(Z),X=:=4,object(A,B,danlap),C is B-1,(C>Z+1),!,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
 enemyRdmMoveDanlap(X):- cfield(Z),X=:=4,object(A,B,danlap),!,C is B+1,retract(object(A,B,danlap)),assertz(object(A,C,danlap)).
 
 posisi(X,Y):- cfield(Z),((12-Z+1=:=X);(12-Z+1=:=Y);(Z=:=Y);(Z=:=X)),!,write('Zona Pencoretan').
