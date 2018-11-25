@@ -269,7 +269,7 @@ use(X) :- ammo(X,_), inventory(I), search(I, X), !.
 use(_) :- write('Barang tidak ada di inventory.').
 
 look:- player(X,Y,_,_,_,_), A is X-1, B is X+1, C is Y-1, D is Y+1,
-      write('Kamu berada di '),nl,posisi(X,Y),lihat(A,C),lihat(X,C),lihat(B,C),lihat(A,Y),lihat(B,Y),lihat(A,D),lihat(X,D),lihat(B,D),nl
+      write('Kamu berada di '),posisi(X,Y),nl,lihat(X,Y),lihat(A,C),lihat(X,C),lihat(B,C),lihat(A,Y),lihat(B,Y),lihat(A,D),lihat(X,D),lihat(B,D),nl
       ,tulis(A,C),tulis(X,C),tulis(B,C),nl
       ,tulis(A,Y),tulis(X,Y),tulis(B,Y),nl
       ,tulis(A,D),tulis(X,D),tulis(B,D),nl.
