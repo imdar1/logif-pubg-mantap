@@ -156,23 +156,23 @@ start   :-  Si is 12,
                 (Command == e,e,fail);
                 (Command == w,w,fail);
                 (Command == status, status, fail);
-                (Command == take(pistol), take(pistol), fail),
-                (Command == take(ak47), take(ak47), fail),
-                (Command == take(antangin), take(antangin), fail),
-                (Command == take(madurasa), take(madurasa), fail),
-                (Command == take(jakang), take(jakang), fail),
-                (Command == take(slayer), take(slayer), fail),
-                (Command == take(ammo1), take(ammo1), fail),
-                (Command == take(ammo2), take(ammo2), fail),
-                (Command == use(pistol), use(pistol), fail),
-                (Command == use(ak47), use(ak47), fail),
-                (Command == use(antangin), use(antangin), fail),
-                (Command == use(madurasa), use(madurasa), fail),
-                (Command == use(jakang), use(jakang), fail),
-                (Command == use(slayer), use(slayer), fail),
-                (Command == use(ammo1), use(ammo1), fail),
-                (Command == use(ammo2), use(ammo2), fail),
-                (Command == quit, !, halt)
+                (Command == take(pistol), take(pistol), fail);
+                (Command == take(ak47), take(ak47), fail);
+                (Command == take(antangin), take(antangin), fail);
+                (Command == take(madurasa), take(madurasa), fail);
+                (Command == take(jakang), take(jakang), fail);
+                (Command == take(slayer), take(slayer), fail);
+                (Command == take(ammo1), take(ammo1), fail);
+                (Command == take(ammo2), take(ammo2), fail);
+                (Command == use(pistol), use(pistol), fail);
+                (Command == use(ak47), use(ak47), fail);
+                (Command == use(antangin), use(antangin), fail);
+                (Command == use(madurasa), use(madurasa), fail);
+                (Command == use(jakang), use(jakang), fail);
+                (Command == use(slayer), use(slayer), fail);
+                (Command == use(ammo1), use(ammo1), fail);
+                (Command == use(ammo2), use(ammo2), fail);
+                (Command == quit, !,halt)
 	        ).
 
 
@@ -247,15 +247,15 @@ tulis(X,Y):- player(X,Y,_,_,_,_), !,write('P').
 tulis(_,_):- write('-').
 
 take(X) :- invLimit(N), N > 0, !, (player(A,B,_,_,_,_), object(A,B,X)), !, inventory(I),
-            retract(inventory(_)), assert(inventory([X|I])).
-take(X) :- +/(player(A,B,_,_,_,_), object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
+            retract(inventory(_)), asserta(inventory([X|I])).
+take(X) :- (\+player(A,B,_,_,_,_);\+object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
 take(_) :- write('Inventory anda sudah penuh').
 
 search([X|A], X) :- true.
 search([], X) :- false.
 search([A|B], X) :- search(B, X).
 
-use(X) :- medicine(X,_), inventory(I), search(I, X), !, player(X,Y,H,A,W,Am), Nh is H+10, retract(player(_,_,_,_,_,_)), assert(player(X,Y,Nh,A,W,Am)).
+use(X) :- medicine(X,_), inventory(I), search(I, X), !, player(X,Y,H,A,W,Am), Nh is H+10, retract(player(_,_,_,_,_,_)), asserta(player(X,Y,Nh,A,W,Am)).
 use(X) :- weapon(X,_), inventory(I), search(I, X), !.
 use(X) :- armor(X,_), inventory(I), search(I, X), !.
 use(X) :- ammo(X,_), inventory(I), search(I, X), !.
