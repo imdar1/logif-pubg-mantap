@@ -20,6 +20,7 @@ invLimit(10).
 /*Definisi:object(X,Y,nama)*/
 /*Mengeset sebuah object yang akan diisi dengan nama dan letak: ammo, enemy, medicine, weapon, dan armor*/
 :- dynamic(object/3).
+:- dynamic(kills/1).
 
 /*Definisi:enemy(Nama,Weapon)*/
 enemy(mamet,pistol).
@@ -49,6 +50,8 @@ start   :-  Si is 12,
 	    write('/_______  |   __(____  |__|   |__| (____  /  |____|_  /\\___  |__|_|  (____  /____  >|__|  \\___  |__|  \\____ | '),nl,
 	    write('        \\/|__|       \\/                 \\/          \\/     \\/      \\/     \\/     \\/           \\/           \\/ '),nl,
       
+            /*Insialiasi jumlah kills*/
+            asserta(kills(0)),
 
             /*Menginisialisasi Lokasi Player*/
             random(2,S,X),
@@ -224,12 +227,6 @@ posisi(X,Y):- X<6,X>2,Y<5,Y>2,!,write('Kandang Domba').
 posisi(X,Y):- X<10,X>6,Y<5,Y>2,!,write('Sabuga').
 posisi(X,Y):- X<10,X>6,Y<12,Y>5,!,write('7602').
 posisi(_,_):- write('Labtek VIII').
-
-status :-  player(_,_,Health,Armor,Weapon,Ammo),
-           write('Nyawa: '), write(Health), nl,
-           write('Pelindung: '), write(Armor), nl,
-           write('Senjata: '), write(Weapon), nl,
-           write('Peluru: '), write(Ammo), nl.
 
 help:-write('Fungsi yang dapat dipakai: '), nl,
       write('start -- memulai permainan'), nl,
@@ -489,8 +486,8 @@ attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop
             write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
             write(We), write('. Kamu terkena '), write(Dmge),
             write(' serangan. Sayangnya kamu tidak punya pelindung!'),
-            ((CHealth > 0,
-            write(' Untungnya, kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl,!);
+            ((CHealth > 0, kills(Kills), Killz is Kills + 1, retract(kills(_)), asserta(kills(Killz)), 
+            write(' Untungnya, kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl, Killz == 2, !, write('SELAMAT ANDA MENJADI KADER TERAKHIR DAN TERBAIK'),!);
             (failed)),!.
 
 attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop), weapon(Wp,_),
@@ -501,8 +498,8 @@ attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop
             write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
             write(We), write('. Kamu terkena '), write(Dmge),
             write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
-            ((CHealth > 0,
-            write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl,!);
+            ((CHealth > 0, kills(Kills), Killz is Kills + 1, retract(_), asserta(Killz),
+            write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl, Killz == 2, !, write('SELAMAT ANDA MENJADI KADER TERAKHIR DAN TERBAIK'),!);
             (failed)).
 
 savef(Namafile):-
