@@ -159,6 +159,7 @@ start   :-  Si is 12,
                 (Command == e,e,fail);
                 (Command == w,w,fail);
                 (Command == status, status, fail);
+                (Command == attack, attack, fail);
                 (Command == take(pistol), take(pistol), fail);
                 (Command == take(ak47), take(ak47), fail);
                 (Command == take(antangin), take(antangin), fail);
@@ -257,9 +258,9 @@ take(X) :- invLimit(N), N > 0, !, (player(A,B,_,_,_,_), object(A,B,X)), !, inven
 take(X) :- (\+player(A,B,_,_,_,_);\+object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
 take(_) :- write('Inventory anda sudah penuh').
 
-search([X|A], X) :- true.
-search([], X) :- false.
-search([A|B], X) :- search(B, X).
+search([X|_], X).
+search([], _) :- false.
+search([_|B], X) :- search(B, X).
 
 use(X) :- medicine(X,_), inventory(I), search(I, X), !, player(X,Y,H,A,W,Am), Nh is H+10, retract(player(_,_,_,_,_,_)), asserta(player(X,Y,Nh,A,W,Am)).
 use(X) :- weapon(X,_), inventory(I), search(I, X), !.
@@ -274,47 +275,29 @@ look:- player(X,Y,_,_,_,_), A is X-1, B is X+1, C is Y-1, D is Y+1,
       ,tulis(A,Y),tulis(X,Y),tulis(B,Y),nl
       ,tulis(A,D),tulis(X,D),tulis(B,D),nl.
 
+attack :- object(Xe,Ye,En), enemy(En,_), player(Xp,Yp,_,_,_,_), (Xp =\= Xe; Yp =\=Ye), write('Tidak ada musuh di sekelilingmu.'), nl,!.
 
-/* attack  :- enemy(Xe,Ye,Weapone), player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop),
-        Xp =:= Xe, Yp tr =:= Ye, !, weapon(X,Y,Weapone,Damagee), 
-        Ammop > 0, !, Ammonp is Ammop - 1,
-        Armorp > 0, !, Armornp is Armorp - Damagee, Armornp < 0, !, 
-        Healthnp is Healthp + Armornp, Armornp is 0,
-        retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)), Healthnp > 0, !,
-        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
-        retract(enemy(Xe,Ye,Weapone)), Xne is 1, Yne is 1, 
-        assertz(enemy(Xne,Yne,Weapone)), 
-        write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
-        write(Weapone), write('. Kamu terkena '), write(Damagee),
-        write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
-        write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'). */
-/* 
-attack  :- Xp =/= Xe, Yp =/= Ye, write('Tidak ada musuh di sekelilingmu.'), nl.
+attack:- player(_,_,_,_,_,Ammop), Ammop == 0, write('Pelurumu habis! Silahkan cari peluru dulu.'), nl,!. 
 
-attack  :- Ammop =:= 0, write('Pelurumu habis! Silahkan cari peluru dulu.'), nl. */
+attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop), weapon(Wp,_),
+            weapon(We,Dmge),Armor =:= 0, CAmmop is Ammop-1, CHealth is Health-Dmge, 
+            retract(player(X,Y,Health,Armor,Wp,Ammop)),asserta(player(X,Y,CHealth,Armor,Wp,CAmmop)),
+            retract(object(X,Y,Enemy)),asserta(object(X,Y,We)),
+            write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
+            write(We), write('. Kamu terkena '), write(Dmge),
+            write(' serangan. Sayangnya kamu tidak punya pelindung!'),
+            ((CHealth > 0,
+            write(' Untungnya, kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl,!);
+            (failed)),!.
 
-/* attack  :- Armorp =:= 0, Healthnp is Healthp - Damagee,
-        retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)), Healthnp > 0, !, 
-        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
-        retract(enemy(Xe,Ye,Weapone)), Xne is 1, Yne is 1, 
-        assertz(enemy(Xne,Yne,Weapone)), 
-        write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
-        write(Weapone), write('. Kamu terkena '), write(Damagee),
-        write(' serangan.'),
-        write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.').
-
-attack  :- Armornp > 0,
-        retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
-        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
-        retract(enemy(Xe,Ye,Weapone)), Xne is 1, Yne is 1, 
-        assertz(enemy(Xne,Yne,Weapone)), 
-        write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
-        write(Weapone), write('. Kamu terkena '), write(Damagee),
-        write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
-        write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.').
-
-attack  :- Healthnp <= 0, Healthnp is 0, Ammonp is Ammop - 1,
-        retract(player(Xp,Yp,Healthp,Armorp,Weaponp,Ammop)),
-        assertz(player(Xp,Yp,Healthnp,Armornp,Weaponp,Ammonp)),
-        write('Kamu telah mati.').
- */
+attack :-   object(X,Y,Enemy), enemy(Enemy,We), player(X,Y,Health,Armor,Wp,Ammop), weapon(Wp,_),
+            weapon(We,Dmge), CAmmop is Ammop-1, Temp is Armor-Dmge, ((Temp >= 0, CArmor is Temp,
+            CHealth is Health,!);(CArmor is 0, CHealth is CHealth+Temp)),
+            retract(player(X,Y,Health,Armor,Wp,Ammop)),asserta(player(X,Y,CHealth,CArmor,Wp,CAmmop)),
+            retract(object(X,Y,Enemy)),asserta(object(X,Y,We)),
+            write('Kamu menyerang musuh dan dia menyerang balik menggunakan '),
+            write(We), write('. Kamu terkena '), write(Dmge),
+            write(' serangan. Untungnya serangan itu dapat dikurangi dengan pelindung.'),
+            ((CHealth > 0,
+            write(' Kamu telah membunuh musuhmu dan musuhmu meletakkan beberapa benda.'),nl,!);
+            (failed)).
