@@ -212,27 +212,10 @@ cek(X,Y):- A is X+1,
 
 failed :- write('Anda kalah di game ini, tapi menang di hati para penonton'), nl, halt.
 
-n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametdo,danlapdo, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametdo,danlapdo,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametdo,danlapdo,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
-w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametdo,danlapdo,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
-
-
-mametdo:- object(A,B,mamet),player(X,Y,_,_,_,_),X=:=A,Y=:=B,!,mametAttack.
-mametdo:- mametMove,object(A,B,mamet),player(X,Y,_,_,_,_),X=:=A,Y=:=B,!,mametAttack.
-mametdo:- object(A,B,mamet). /*,write(A),write(' '),write(B),nl.*/
-
-danlapdo:- object(A,B,danlap),player(X,Y,_,_,_,_),X=:=A,Y=:=B,!,danlapAttack.
-danlapdo:- danlapMove,object(A,B,danlap),player(X,Y,_,_,_,_),X=:=A,Y=:=B,!,danlapAttack.
-danlapdo:- object(A,B,danlap). /*,write(A),write(' '),write(B),nl.*/
-
-mametAttack:- enemy(mamet,X),weapon(X,Y),player(A,B,C,D,E,F),D =< Y,!,retract(player(A,B,C,D,E,F)),G is D-Y,H is C+G,assertz(player(A,B,H,0,E,F)).
-mametAttack:- enemy(mamet,X),weapon(X,Y),player(A,B,C,D,E,F),G is D-Y,G=<0,!,retract(player(A,B,C,D,E,F)),failed.
-mametAttack:- enemy(mamet,X),weapon(X,Y),retract(player(A,B,C,D,E,F)),G is D-Y,assertz(player(A,B,C,G,E,F)).
-
-danlapAttack:- enemy(danlap,X),weapon(X,Y),player(A,B,C,D,E,F),D =< Y,!,retract(player(A,B,C,D,E,F)),G is D-Y,H is C+G,assertz(player(A,B,H,0,E,F)).
-danlapAttack:- enemy(danlap,X),weapon(X,Y),player(A,B,C,D,E,F),G is D-Y,G=<0,retract(player(A,B,C,D,E,F)),failed.
-danlapAttack:- enemy(danlap,X),weapon(X,Y),retract(player(A,B,C,D,E,F)),G is D-Y,assertz(player(A,B,C,G,E,F)).
+n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametmove,danlapmove, ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametmove,danlapmove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametmove,danlapmove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
+w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), mametmove,danlapmove,((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 
 mametMove:- random(1,5,X),enemyRdmMoveMamet(X).
 danlapMove:- random(1,5,X),enemyRdmMoveDanlap(X).
