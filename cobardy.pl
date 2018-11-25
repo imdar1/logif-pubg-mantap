@@ -164,7 +164,6 @@ start   :-  Si is 12,
                 ((Command == take(slayer)), take(slayer), fail);
                 ((Command == take(ammo1)), take(ammo1), fail);
                 ((Command == take(ammo2)), take(ammo2), fail);
-                ((Command == attack), attacke(X,Y), fail);
                 ((Command == use(pistol)), use(pistol), fail);
                 ((Command == use(ak47)), use(ak47), fail);
                 ((Command == use(antangin)), use(antangin), fail);
@@ -173,6 +172,15 @@ start   :-  Si is 12,
                 ((Command == use(slayer)), use(slayer), fail);
                 ((Command == use(ammo1)), use(ammo1), fail),                
                 ((Command == use(ammo2)), use(ammo2), fail);
+                ((Command == drop(pistol)), drop(pistol), fail);
+                ((Command == drop(ak47)), drop(ak47), fail);
+                ((Command == drop(antangin)), drop(antangin), fail);
+                ((Command == drop(madurasa)), drop(madurasa), fail);
+                ((Command == drop(jakang)), drop(jakang), fail);
+                ((Command == drop(slayer)), drop(slayer), fail);
+                ((Command == drop(ammo1)), drop(ammo1), fail),                
+                ((Command == drop(ammo2)), drop(ammo2), fail);
+                ((Command == attack), attacke(X,Y), fail);
                 (Command == quit, !, halt)
 	        ).
 
@@ -256,7 +264,7 @@ take(X) :- invLimit(N), N > 0, !, (player(A,B,_,_,_,_), object(A,B,X)), !, inven
             retract(inventory(_)), asserta(inventory([X|I])), Nf is N-1, retract(invLimit(_)),
             asserta(invLimit(Nf)), retract(object(A,B,X)).
 take(X) :- player(A,B,_,_,_,_), \+(object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
-take(_) :- write('Inventory anda sudah penuh').
+take(_) :- invLimit, N == 0, write('Inventory anda sudah penuh').
 
 search([X|A], X) :- true.
 search([], X) :- false.
@@ -264,6 +272,13 @@ search([A|B], X) :- search(B, X).
 
 hapus([X|T], X, T).
 hapus([H|T], X, [H|L]) :- hapus(T, X, L).
+
+drop(X) :- inventory(L), search(L, X), !, 
+            hapus(L, X, Lf), player(Xp,Yp,_,_,_,_),
+            assertz(object(Xp,Yp,X)), 
+            retract(inventory(_)),
+            asserta(inventory(Lf)).
+drop(X) :- write('Barang tidak ada di inventory').
 
 use(X) :- medicine(X,HealthIncrease), inventory(I), search(I, X), !, hapus(I,X,INew), retract(inventory(_)), asserta(inventory(INew)), player(Xp,Yp,H,A,W,Am), Nh is H+HealthIncrease, retract(player(_,_,_,_,_,_)), asserta(player(Xp,Yp,Nh,A,W,Am)).
 use(X) :- weapon(X,_), inventory(I), search(I, X), !, hapus(I,X,INew), retract(inventory(_)), asserta(inventory(INew)), player(Xp,Yp,H,A,W,Am), retract(player(_,_,_,_,_,_)), asserta(player(Xp,Yp,H,A,X,Am)).
