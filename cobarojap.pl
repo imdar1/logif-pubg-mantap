@@ -172,8 +172,8 @@ start   :-  Si is 12,
                 (Command == use(ammo1), use(ammo1), fail);
                 (Command == use(ammo2), use(ammo2), fail);
                 (Command == attack, attack, fail);
-                (Command == savef(read(Namafile)), savef(read(Namafile)), fail);
-                (Command == loadf(read(Namafile)), loadf(read(Namafile)), fail);
+                (Command == save, savef(savefile), fail);
+                (Command == load, loadf(savefile), fail);
                 (Command == quit, !, halt)
 	        ).
 
@@ -249,15 +249,15 @@ tulis(X,Y):- player(X,Y,_,_,_,_), !,write('P').
 tulis(_,_):- write('-').
 
 take(X) :- invLimit(N), N > 0, !, (player(A,B,_,_,_,_), object(A,B,X)), !, inventory(I),
-            retract(inventory(_)), assert(inventory([X|I])).
-take(X) :- +/(player(A,B,_,_,_,_), object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
+            retract(inventory(_)), asserta(inventory([X|I])).
+take(X) :- (\+player(A,B,_,_,_,_); \+object(A,B,X)), write('Objek yang ingin diambil tidak ada ').
 take(_) :- write('Inventory anda sudah penuh').
 
 search([X|A], X) :- true.
 search([], X) :- false.
 search([A|B], X) :- search(B, X).
 
-use(X) :- medicine(X,_), inventory(I), search(I, X), !, player(X,Y,H,A,W,Am), Nh is H+10, retract(player(_,_,_,_,_,_)), assert(player(X,Y,Nh,A,W,Am)).
+use(X) :- medicine(X,_), inventory(I), search(I, X), !, player(X,Y,H,A,W,Am), Nh is H+10, retract(player(_,_,_,_,_,_)), asserta(player(X,Y,Nh,A,W,Am)).
 use(X) :- weapon(X,_), inventory(I), search(I, X), !.
 use(X) :- armor(X,_), inventory(I), search(I, X), !.
 use(X) :- ammo(X,_), inventory(I), search(I, X), !.
@@ -271,7 +271,7 @@ look:- player(X,Y,_,_,_,_), A is X-1, B is X+1, C is Y-1, D is Y+1,
       ,tulis(A,D),tulis(X,D),tulis(B,D),nl.
 
 savef(Namafile):-
-    
+    write('Msuk'),nl,
     open(Namafile, write, Stream),
 
     player(Xp,Yp,Health,Armor,Weaponp,Ammo),
@@ -296,6 +296,7 @@ savef(Namafile):-
     close(Stream).
 
 loadf(Namafile):-
+write('Msuk'),nl,
     open(Namafile, read, Stream),
 
     player(Xp,Yp,Health,Armor,Weaponp,Ammo),
@@ -328,24 +329,8 @@ loadf(Namafile):-
     asserta(inventory(ListInventory)),
     asserta(object(Xe,Ye,Namao)),
 
-    write("suds bro!"), nl,
+    write('suds bro!'), nl,
     close(Stream).
-
-	/* Write player data */
-	write(Stream, Health), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Hunger), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Thirst), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Pos_x), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Pos_y), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Weapon), 			write(Stream, '.'), nl(Stream),
-	write(Stream, Inventory), 		write(Stream, '.'), nl(Stream),
-	
-	/* Write map data */
-	write(Stream, Map_items), 		write(Stream, '.'), nl(Stream),
-	write(Stream, Enemies), 		write(Stream, '.'), nl(Stream),
-	
-	write('Save data successfully created !'), nl,
-	close(Stream).
 
 
 
