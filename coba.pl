@@ -191,12 +191,12 @@ w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,
 moveRandomMamet :- retract(object(X,Y,mamet)), randomize, random(-1,2,M), ((M =:=0,random(1,3,N),MoveY is N*2-3,Xa is X, Ya is Y+MoveY,asserta(object(Xa,Ya,mamet)),!);(Xa is X+M, Ya is Y,asserta(object(Xa,Ya,mamet)))).
 moveRandomDanlap :- retract(object(X,Y,danlap)),randomize, random(-1,2,M), ((M =:=0,random(1,3,N),MoveY is N*2-3,Xa is X, Ya is Y+MoveY,asserta(object(Xa,Ya,danlap)),!);(Xa is X+M, Ya is Y,asserta(object(Xa,Ya,danlap)))).
 
-posisi(X,Y):- cfield(Z),((12-Z+1=:=X);(12-Z+1=:=Y);(Z=:=Y);(Z=:=X)),!,write('Dunia Lain').
-posisi(X,Y):- X<6,X>2,Y<12,Y>5,!,write('Hutan').
-posisi(X,Y):- X<6,X>2,Y<5,Y>2,!,write('Rawa').
-posisi(X,Y):- X<10,X>6,Y<5,Y>2,!,write('Pedesaan').
-posisi(X,Y):- X<10,X>6,Y<12,Y>5,!,write('Pantai').
-posisi(_,_):- write('Gurun').
+posisi(X,Y):- cfield(Z),((12-Z+1=:=X);(12-Z+1=:=Y);(Z=:=Y);(Z=:=X)),!,write('Zona Pencoretan').
+posisi(X,Y):- X<6,X>2,Y<12,Y>5,!,write('Ding Dong').
+posisi(X,Y):- X<6,X>2,Y<5,Y>2,!,write('Kandang Domba').
+posisi(X,Y):- X<10,X>6,Y<5,Y>2,!,write('Sabuga').
+posisi(X,Y):- X<10,X>6,Y<12,Y>5,!,write('7602').
+posisi(_,_):- write('Labtek VIII').
 
 status :-  player(_,_,Health,Armor,Weapon,Ammo),
            write('Nyawa: '), write(Health), nl,
