@@ -2,19 +2,14 @@
 
 /*Definisi:player(X,Y,Health,Armor,Weapon,Ammo)*/
 :- dynamic(player/6). 
-player(1,1,100,0,ak47,5).
 /*Definisi:cfield(AreaDaerahDanger)*/
 :- dynamic(cfield/1). 
-cfield(1).
 /*Definisi:move(JumlahMoveDilakukan)*/
 :- dynamic(move/1).
- move(0).
 /*Definisi:inventory(ListInventory)*/
 :- dynamic(inventory/1).
-inventory([]).
 /*Definisi:invLimit*/
 :- dynamic(invLimit/1).
-invLimit(10).
 /*Definisi:object(X,Y,nama)*/
 /*Mengeset sebuah object yang akan diisi dengan nama dan letak: ammo, enemy, medicine, weapon, dan armor*/
 :- dynamic(object/3).
@@ -41,11 +36,14 @@ start   :-  Si is 12,
             S is Si-1,
 
             /*Menginisialisasi Lokasi Player*/
+            randomize,
             random(2,S,X),
             random(2,S,Y),
-            retract(player(_,_,Health,Armor,Weapon,Ammo)),
-            asserta(player(X,Y,Health,Armor,Weapon,Ammo)),
-
+            asserta(player(X,Y,100,0,ak47,5)),
+            asserta(cfield(1)),
+            asserta(move(0)),
+            asserta(inventory([])),
+            asserta(invLimit(10)),
             /*Menginisialisasi Lokasi Enemy*/
             random(2,S,Xe1),
             random(2,S,Ye1),
@@ -180,10 +178,10 @@ cek(X,Y):- A is X+1, B is X-1, C is Y+1, D is Y-1, write('Utara kamu adalah '),p
 
 failed :- write('Anda kalah di game ini, tapi menang di hati para penonton'), nl, halt.
 
-n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), cfield(D), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), cfield(D), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
-e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), cfield(D), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
-w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), cfield(D), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
+n:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y-1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+s:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is Y+1,asserta(player(X,Z,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(X,Z),nl,cek(X,Z),move(A),B is A+1,retract(move(A)),asserta(move(B)), ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<X);(12-D+1=<Z);(Z=<D);(X=<D)), !, failed.
+e:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X+1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
+w:-player(X,Y,M,N,P,Q), retract(player(X,Y,M,N,P,Q)), Z is X-1,asserta(player(Z,Y,M,N,P,Q)),write('Kamu sekarang berada di '),posisi(Z,Y),nl,cek(Z,Y),move(A),B is A+1,retract(move(A)),asserta(move(B)), ((0 is B mod 4,retract(cfield(OC)),D is OC+1, asserta(cfield(D)),!); (cfield(D))), ((12-D+1=<Z);(12-D+1=<Y);(Y=<D);(Z=<D)), !, failed.
 
 posisi(X,Y):- cfield(Z),((12-Z+1=:=X);(12-Z+1=:=Y);(Z=:=Y);(Z=:=X)),!,write('Dunia Lain').
 posisi(X,Y):- X<6,X>2,Y<12,Y>5,!,write('Hutan').
